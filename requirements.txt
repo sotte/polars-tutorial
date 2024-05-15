@@ -1,0 +1,7 @@
+# keep this in sync with the versions in the notebook
+polars[plot,pyarrow]==0.20.25
+pandera[polars]==0.19.2
+
+jupyter
+jupytext
+ruff
