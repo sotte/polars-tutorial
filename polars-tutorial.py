@@ -16,7 +16,7 @@
 # %% [markdown]
 # # My Small [Polars](https://www.pola.rs/) Tutorial
 #
-# This is a small polars tutorial.
+# [This](https://github.com/sotte/polars-tutorial) is a small polars tutorial.
 # It covers basic concepts as well as some random (hopefully) useful things.
 #
 # It is based on the great
