@@ -6,7 +6,7 @@
 #       extension: .py
 #       format_name: percent
 #       format_version: '1.3'
-#       jupytext_version: 1.16.2
+#       jupytext_version: 1.16.3
 #   kernelspec:
 #     display_name: Python 3 (ipykernel)
 #     language: python
@@ -17,7 +17,7 @@
 # # My Small [Polars](https://www.pola.rs/) Tutorial
 #
 # [This](https://github.com/sotte/polars-tutorial) is a small polars tutorial.
-# It covers basic concepts as well as some random (hopefully) useful things.
+# It covers basic polars concepts as well as some random (hopefully) useful things.
 #
 # It is based on the great
 # [polars cheat sheet](https://franzdiebold.github.io/polars-cheat-sheet/Polars_cheat_sheet.pdf)
@@ -59,15 +59,10 @@
 # ### Install
 
 # %%
-# !pip install polars==0.20.25
+# !cat requirements.txt
 
-# we'll install a bit more for later parts of the tutorial
-
-# we want to plot dataframes
-# !pip install "polars[plot,pyarrow]==0.20.25"
-
-# we want to validate dataframes with pandera
-# !pip install "pandera[polars]==0.19.2"
+# %%
+# !pip install -r requirements.txt > /dev/null
 
 # %% [markdown]
 # ### Import
@@ -319,7 +314,7 @@ df.group_by("groups").agg(
 (df.group_by("groups").agg(pl.col("names").sample(1).alias("foo")))
 
 # %% [markdown]
-# ### Reshaping Data – Change Layout and Renaming
+# ### Reshaping Data - Changing Layout and Renaming
 
 # %%
 # Rename the columns of a DataFrame
@@ -354,15 +349,15 @@ pl.concat([df, df2])
 pl.concat([df, df3], how="horizontal")
 
 # %%
-# Gather columns into rows
-df.melt(id_vars="nrs", value_vars=["names", "groups"])
-
-# %%
 # Spread rows into columns
 df.pivot(values="nrs", index="groups", columns="names")
 
+# %%
+# Gather columns into rows (this is equivalent to the deprecated melt() function)
+df.unpivot(index="nrs", on=["names", "groups"])
+
 # %% [markdown]
-# ### Reshaping Data - Join Data Sets
+# ### Reshaping Data - Joining Data Sets
 
 # %%
 df4 = pl.DataFrame(
@@ -396,6 +391,18 @@ df.join(df4, on="nrs", how="anti")
 
 # %% [markdown]
 # ## Misc
+
+# %% [markdown]
+# ### Changing Entries That Match Certain Criteria
+# Use the `when().then().otherwise()` chain for this.
+
+# %%
+df.with_columns(
+    pl.when((c("groups") == "A") & (c("names") == "foo"))
+    .then(9.0)
+    .otherwise(c.random)
+    .alias("random")
+)
 
 # %% [markdown]
 # ### Handling Missing Data

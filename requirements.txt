@@ -1,6 +1,5 @@
-# keep this in sync with the versions in the notebook
-polars[plot,pyarrow]==0.20.25
-pandera[polars]==0.19.2
+polars[plot,pyarrow]==1.2.1
+pandera[polars]==0.20.3
 
 jupyter
 jupytext
